@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StreamFlix - Video Player</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #141414;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #333;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #e50914;
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 1.1rem;
+        }
+
+        .video-container {
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        video {
+            width: 100%;
+            display: block;
+        }
+
+        .video-controls {
+            background: rgba(0,0,0,0.8);
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .control-btn {
+            background: #e50914;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .progress-bar {
+            flex-grow: 1;
+            height: 5px;
+            background: #333;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: #e50914;
+            width: 30%;
+        }
+
+        .server-instructions {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border-left: 4px solid #e50914;
+        }
+
+        .server-instructions h3 {
+            color: #e50914;
+            margin-bottom: 15px;
+        }
+
+        .server-instructions code {
+            background: #000;
+            padding: 10px;
+            border-radius: 5px;
+            display: block;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .content-item {
+            background: #222;
+            border-radius: 5px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .content-item:hover {
+            transform: scale(1.05);
+        }
+
+        .content-item img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+        }
+
+        .content-info {
+            padding: 15px;
+        }
+
+        .content-info h4 {
+            margin-bottom: 5px;
+        }
+
+        .content-info p {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">STREAMFLIX</div>
+            <div class="nav-links">
+                <a href="#">Home</a>
+                <a href="#">Movies</a>
+                <a href="#">TV Shows</a>
+                <a href="#">My List</a>
+            </div>
+        </header>
+
+        <div class="video-container">
+            <video id="mainVideo" controls>
+                <source src="sample.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="video-controls">
+                <button class="control-btn" id="playBtn">
+                    <i class="fas fa-play"></i> Play
+                </button>
+                <button class="control-btn" id="pauseBtn">
+                    <i class="fas fa-pause"></i> Pause
+                </button>
+                <div class="progress-bar">
+                    <div class="progress" id="progress"></div>
+                </div>
+                <span id="timeDisplay">0:00 / 0:00</span>
+            </div>
+        </div>
+
+        <h2>Recommended for You</h2>
+        <div class="content-grid">
+            <div class="content-item" onclick="playVideo('sample.mp4')">
+                <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Movie 1">
+                <div class="content-info">
+                    <h4>Action Movie</h4>
+                    <p>Thriller • 2h 15m</p>
+                </div>
+            </div>
+            <div class="content-item">
+                <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b773f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Movie 2">
+                <div class="content-info">
+                    <h4>Sci-Fi Adventure</h4>
+                    <p>Science Fiction • 2h 30m</p>
+                </div>
+            </div>
+            <div class="content-item">
+                <img src="https://images.unsplash.com/photo-1489599809516-9827b6d1cf13?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Movie 3">
+                <div class="content-info">
+                    <h4>Romantic Comedy</h4>
+                    <p>Comedy • 1h 45m</p>
+                </div>
+            </div>
+            <div class="content-item">
+                <img src="https://images.unsplash.com/photo-1531259683007-016a7b628fc3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Movie 4">
+                <div class="content-info">
+                    <h4>Horror Night</h4>
+                    <p>Horror • 1h 55m</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="server-instructions">
+            <h3><i class="fas fa-server"></i> Server Running Successfully!</h3>
+            <p>Your local server is running at: <strong>http://localhost:8000</strong></p>
+            <p>To stop the server, press <kbd>Ctrl + C</kbd> in your terminal.</p>
+            <p>Make sure your video file "sample.mp4" is in the same directory as this HTML file.</p>
+        </div>
+    </div>
+
+    <script>
+        const video = document.getElementById('mainVideo');
+        const playBtn = document.getElementById('playBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const progress = document.getElementById('progress');
+        const timeDisplay = document.getElementById('timeDisplay');
+
+        playBtn.addEventListener('click', () => {
+            video.play();
+        });
+
+        pauseBtn.addEventListener('click', () => {
+            video.pause();
+        });
+
+        video.addEventListener('timeupdate', () => {
+            const percent = (video.currentTime / video.duration) * 100;
+            progress.style.width = `${percent}%`;
+            
+            const formatTime = (seconds) => {
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+            };
+            
+            timeDisplay.textContent = `${formatTime(video.currentTime)} / ${formatTime(video.duration)}`;
+        });
+
+        function playVideo(videoSrc) {
+            video.src = videoSrc;
+            video.load();
+            video.play();
+        }
+
+        // Auto-play video on page load
+        window.addEventListener('load', () => {
+            console.log('Page loaded successfully!');
+            console.log('Server is running at http://localhost:8000');
+        });
+    </script>
+</body>
+</html>
